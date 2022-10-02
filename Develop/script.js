@@ -8,30 +8,34 @@ function writePassword() {
     return;
   }
   var passwordText = document.querySelector("#password");
-  passwordText.value = password;
+  passwordText.value = password;//Make password display in textarea on webpage
 }
 
+//Add logic for selecting password criteria
 function generatePassword() {
-  var pswLength = prompt("How long you want your password? (8~128)");
-  // change of data type
+  var pswLength = prompt("How long you want your password? (Length:8-128)");
   if(pswLength != null) {
+    //Change data type to number
     var pswLengthNum = Number(pswLength);
+    //Add prompt and confirm for selecting password criteria
     if(!isNaN(pswLengthNum) && pswLengthNum >= 8 && pswLengthNum <= 128) {
       var lowerCase = confirm("Do you want lowercase in your password?");
       var upperCase = confirm("Do you want uppercase in your password?");
       var numeric = confirm("Do you want number in your password?");
       var speChar = confirm("Do you want special character in your password?");
-      //TODO: if all false, alert.
-
+      if(!lowerCase && !upperCase && !numeric && !speChar) {
+        alert("Please select at lease one character type.")
+      }
       return gen(pswLengthNum, lowerCase, upperCase, numeric, speChar);
     } else {
-      alert("Please enter a valid password length.");
+      alert("Please enter a valid password length (8-128).");
     }
   }
   return;
 }
 
-function gen(length, lowerCaseFlag, upperCaseFlag, numericFlag, speCharFlag) {
+//Generate password based the criteria selected
+function gen(lengthFlag, lowerCaseFlag, upperCaseFlag, numericFlag, speCharFlag) {
   var lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
   var upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   var numericChars = "0123456789";
@@ -59,7 +63,7 @@ function gen(length, lowerCaseFlag, upperCaseFlag, numericFlag, speCharFlag) {
     password += randomPicOne(speChars);
   }
 
-  var leftCharsTotal = length - password.length;
+  var leftCharsTotal = lengthFlag - password.length;
   
   for (var i = 0; i < leftCharsTotal; i++) {
     password += randomPicOne(chars);
@@ -68,6 +72,7 @@ function gen(length, lowerCaseFlag, upperCaseFlag, numericFlag, speCharFlag) {
   return password;
 }
 
+//Pick a random number using functions
 function randomPicOne(charSet) {
   var randomNumber = Math.floor(Math.random() * charSet.length);
   return charSet.substring(randomNumber, randomNumber + 1);
